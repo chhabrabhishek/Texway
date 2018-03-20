@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Texway</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">G.P.S</string>
+    <string name="slide_1_desc">Providing Geolocation and Time information in any weather condition</string>
+
+    <string name="slide_2_title">Compass</string>
+    <string name="slide_2_desc">Helps you in navigation and orientation </string>
+
+    <string name="slide_3_title">OSM</string>
+    <string name="slide_3_desc">We have Open Street Maps to drive you from source to destination</string>
+
+    <string name="slide_4_title">Offline</string>
+    <string name="slide_4_desc">No internet connection? You will still reach your destination</string>
+</resources>
