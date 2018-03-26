@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
     EditText edt1,edt2;
     FloatingActionButton FAB;
     DataBaseManager dataBaseManager;
-
-    String[] From_To = {"Delhi-Mumbai","Delhi-Gurgaon","Ghaziabad-Pune","Paattya-Budapest","Jdgw-kdgjfg","jhwfdut-kbgjfg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +73,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"DATA NOT INSERTED",Toast.LENGTH_LONG).show();
         }
 
+        Intent intent = new Intent(MainActivity.this,GraphActivity.class);
+        startActivity(intent);
+
     }
 
     class CustomAdapter extends BaseAdapter{
 
         @Override
         public int getCount() {
-            return From_To.length;
+            return 5;
         }
 
         @Override
@@ -99,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
             convertView = getLayoutInflater().inflate(R.layout.custom_list,null);
             TextView textView = (TextView) convertView.findViewById(R.id.from_to_to);
 
-            textView.setText(From_To[position]);
+            Cursor res = dataBaseManager.getAlldata();
+            StringBuffer sb = new StringBuffer();
+            while(res.moveToNext()){
+                textView.setText(sb.append("From :"+res.getString(1)+"  To :"+res.getString(2)));
+            }
             return convertView;
         }
     }

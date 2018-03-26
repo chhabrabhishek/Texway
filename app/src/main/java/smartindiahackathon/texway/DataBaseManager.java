@@ -52,4 +52,11 @@ public class DataBaseManager extends SQLiteOpenHelper {
         }
     }
 
+    public Cursor getAlldata(){
+        String query = "SELECT * FROM "+ TableName;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery(query,null);
+        return res;
+    }
+
 }
