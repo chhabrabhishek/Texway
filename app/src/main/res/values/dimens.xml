@@ -9,4 +9,9 @@
     <dimen name="slide_title">30dp</dimen>
     <dimen name="slide_desc">16dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
+
+    <dimen name="list_spacing">6dp</dimen>
+    <dimen name="list_spacing_half">3dp</dimen>
+
+    <dimen name="list_internal_spacing">20dp</dimen>
 </resources>

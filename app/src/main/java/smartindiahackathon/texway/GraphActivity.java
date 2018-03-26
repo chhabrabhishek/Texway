@@ -19,13 +19,13 @@ public class GraphActivity extends AppCompatActivity {
 
         smsReceiver = new SMSReceiver();
         double x_cord= -6.0;
-        double y_cord;
+        double y_cord= 5.0;
 
         GraphView graphView = (GraphView) findViewById(R.id.graph_view);
         series = new LineGraphSeries<DataPoint>();
         for(int i=0 ; i < 5000 ; i++){
             x_cord = x_cord + 0.1;
-            y_cord = Math.sin(x_cord);
+            y_cord = y_cord + 0.2;
             series.appendData(new DataPoint(x_cord,y_cord),true,500);
         }
         graphView.addSeries(series);

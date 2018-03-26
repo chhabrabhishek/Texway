@@ -186,7 +186,7 @@
             android:src="@drawable/switch_button"/>
 
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="12dp"
         android:layout_height="12dp"
@@ -215,19 +215,33 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_82"
-        app:layout_constraintBottom_toTopOf="@id/horizontal_95"
-        app:layout_constraintLeft_toRightOf="@id/vertical_74"
-        app:layout_constraintRight_toLeftOf="@id/vertical_94"
+        app:layout_constraintTop_toBottomOf="@id/edt_wrapper"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_end"
+        app:layout_constraintLeft_toRightOf="@id/vertical_start"
+        app:layout_constraintRight_toLeftOf="@id/vertical_end"
         android:clipChildren="false">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lists"
+            android:orientation="vertical"
+            android:divider="@null"
+            android:dividerHeight="4dp"
+            android:isScrollContainer="false"
+            android:scrollbars="none"
+            android:paddingLeft="@dimen/list_spacing"
+            android:paddingRight="@dimen/list_spacing">
+
+        </ListView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="end|bottom"
             android:clickable="true"
             android:visibility="visible"
@@ -238,44 +252,10 @@
             app:layout_anchor="@id/lists"
             app:layout_anchorGravity="bottom|right|end"
             app:borderWidth="0dp"
-            android:layout_margin="8dp"/>
-    </LinearLayout>
+            android:layout_margin="16dp"/>
 
+    </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/list_layout"
-        app:layout_constraintTop_toBottomOf="@id/Recent_text"
-        app:layout_constraintBottom_toTopOf="@id/horizontal_90">
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lists"
-        android:orientation="vertical"
-        android:divider="@null"
-        android:dividerHeight="4dp"
-        android:isScrollContainer="false"
-        android:scrollbars="none">
-
-    </ListView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Recent_text"
-        android:background="#ffffff"
-        app:layout_constraintTop_toBottomOf="@id/edt_wrapper">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="RECENT SEARCHES"
-            android:textAlignment="center"
-            android:textSize="10dp"/>
-
-    </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
 

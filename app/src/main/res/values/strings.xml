@@ -16,4 +16,6 @@
 
     <string name="slide_4_title">Offline</string>
     <string name="slide_4_desc">No internet connection? You will still reach your destination</string>
+
+    <string name="recent_list_header">RECENT SEARCHES</string>
 </resources>

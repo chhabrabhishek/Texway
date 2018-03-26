@@ -17,8 +17,12 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String DataBaseName = "YeahDatabase.db";
     public static final int DataBaseVersion = 1;
     public static final String ID = "_id";
-    public static final String Source = "From_location";
-    public static final String Destination = "To_location";
+    public static final String Source = "from_location";
+    public static final String Destination = "to_location";
+    public static final String SourceCoordinate = "cord_source";
+    public static final String DestinationCoordinate = "cord_destination";
+    public static final String TimeStamp = "timestamp";
+
 
     public DataBaseManager(Context context){
         super(context,DataBaseName,null,DataBaseVersion);
@@ -28,7 +32,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("#FUCK", "YOU");
-        db.execSQL("CREATE TABLE " + TableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, From_location TEXT , To_location TEXT);");
+        db.execSQL("CREATE TABLE " + TableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, from_location TEXT , to_location TEXT , cord_source TEXT , cord_destination TEXT , timestamp INT);");
     }
 
     @Override
@@ -37,13 +41,15 @@ public class DataBaseManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insert_data(String Sid,String SName){
+    public boolean insert_data(String From,String To){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Source,Sid);
-        contentValues.put(Destination,SName);
+        contentValues.put(Source,From);
+        contentValues.put(Destination,To);
+        contentValues.put(SourceCoordinate,"76.99,54.67");
+        contentValues.put(DestinationCoordinate,"76.99,54.67");
+        contentValues.put(TimeStamp, 1522057729);
         long result = db.insert(TableName,null,contentValues);
-        Log.d("#FUCK", Long.toString(result));
         if(result==-1){
             return false;
         }
@@ -57,6 +63,14 @@ public class DataBaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery(query,null);
         return res;
+    }
+
+    public int getSize() {
+        String query = "SELECT COUNT(*) FROM "+TableName;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor response = db.rawQuery(query, null);
+        response.moveToNext();
+        return response.getInt(0);
     }
 
 }
