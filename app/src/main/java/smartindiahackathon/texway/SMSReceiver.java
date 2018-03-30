@@ -25,13 +25,9 @@ public class SMSReceiver extends BroadcastReceiver {
                 send_number = smsMessage.getOriginatingAddress();
                 String message = smsMessage.getDisplayMessageBody();
                 Toast.makeText(context, "From : "+send_number+"  Message : "+message, Toast.LENGTH_LONG).show();
-
-                 x = message.substring(message.lastIndexOf("=")+1);
-
             }
-
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(send_number,null,"Thank you server",null,null);
+            smsManager.sendTextMessage(send_number,null,"thank you server",null,null);
         }
     }
 

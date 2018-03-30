@@ -32,7 +32,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("#FUCK", "YOU");
-        db.execSQL("CREATE TABLE " + TableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, from_location TEXT , to_location TEXT , cord_source TEXT , cord_destination TEXT , timestamp INT);");
+        db.execSQL("CREATE TABLE " + TableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, from_location TEXT , to_location TEXT , cord_source TEXT , cord_destination TEXT , timestamp TEXT);");
     }
 
     @Override
@@ -41,14 +41,14 @@ public class DataBaseManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insert_data(String From,String To){
+    public boolean insert_data(String From,String To,String date){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Source,From);
         contentValues.put(Destination,To);
         contentValues.put(SourceCoordinate,"76.99,54.67");
         contentValues.put(DestinationCoordinate,"76.99,54.67");
-        contentValues.put(TimeStamp, 1522057729);
+        contentValues.put(TimeStamp, date);
         long result = db.insert(TableName,null,contentValues);
         if(result==-1){
             return false;

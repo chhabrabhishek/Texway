@@ -1,13 +1,17 @@
 package smartindiahackathon.texway;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +23,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText edt1,edt2;
     FloatingActionButton FAB;
+    Calendar calendar;
+    SimpleDateFormat simpleDateFormat;
+    String date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +42,11 @@ public class MainActivity extends AppCompatActivity {
         edt1 = (EditText) findViewById(R.id.source_edittext);
         edt2 = (EditText) findViewById(R.id.destination_edittext);
         FAB = (FloatingActionButton) findViewById(R.id.fab);
-
+        calendar = Calendar.getInstance();
+        simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy  HH:mm");
+        date = simpleDateFormat.format(calendar.getTime());
+        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
         ListView listView = (ListView) findViewById(R.id.lists);
-
         CustomAdapter customAdapter = new CustomAdapter(this);
         listView.setAdapter(customAdapter);
     }
@@ -57,18 +68,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AddData(View view){
-        Intent intent = new Intent(MainActivity.this,GraphActivity.class);
-        startActivity(intent);
-        DataBaseManager dataBaseManager = new DataBaseManager(this);
-        boolean insert_status = dataBaseManager.insert_data(edt1.getText().toString(),edt2.getText().toString());
-        if (insert_status == true){
-            Toast.makeText(getApplicationContext(),"Rows are added",Toast.LENGTH_SHORT).show();
+        GpsLocation gpsLocation = new GpsLocation(getApplicationContext());
+        Location location = gpsLocation.getLocation();
+        if (location!=null){
+            String latitude = Double.toString(location.getLatitude());
+            String longitude = Double.toString(location.getLongitude());
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("+918368119807",null,"Latitude : "+latitude+"\n"+"Longitude : "+longitude,null,null);
         }
-        else {
-            Toast.makeText(getApplicationContext(),"Addition unsuccessful",Toast.LENGTH_SHORT).show();
 
+        DataBaseManager dataBaseManager = new DataBaseManager(this);
+        if (edt1.getText().toString().trim().length()==0 || edt2.getText().toString().trim().length()==0) {
+            Toast.makeText(getApplicationContext(),"TextBox can't be empty",Toast.LENGTH_SHORT).show();
         }
+        else{
+            boolean insert_status = dataBaseManager.insert_data(edt1.getText().toString(), edt2.getText().toString(), date);
+            if (insert_status == true) {
+                Toast.makeText(getApplicationContext(), "Rows are added", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Addition unsuccessful", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
     }
+
 
     class CustomAdapter extends BaseAdapter{
         private DataBaseManager dataBaseManager;
@@ -87,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        String.valueOf(cursor.getLong(5))
+                        cursor.getString(5)
                 });
             }
         }
@@ -124,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // except for the header
-            position -= 1;
+            position = position-1;
 
             convertView = getLayoutInflater().inflate(R.layout.custom_list,null);
             TextView textView = (TextView) convertView.findViewById(R.id.from);
@@ -139,6 +163,11 @@ public class MainActivity extends AppCompatActivity {
             recentElTimestamp.setText(allRows.get(position)[4]);
             return convertView;
         }
+    }
+
+    public void graph_coordinates(View view){
+        Intent intent = new Intent(MainActivity.this,GraphActivity.class);
+        startActivity(intent);
     }
 
 }
