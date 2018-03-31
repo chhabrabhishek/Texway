@@ -68,7 +68,7 @@ tools:context="smartindiahackathon.texway.MainActivity">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.22" />
+    app:layout_constraintGuide_percent="0.28" />
 
 <android.support.constraint.Guideline
     android:id="@+id/horizontal_82"
@@ -103,7 +103,7 @@ tools:context="smartindiahackathon.texway.MainActivity">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintGuide_percent="0.084" />
+    app:layout_constraintGuide_percent="0.076" />
 
 <android.support.constraint.Guideline
     android:id="@+id/vertical_88"
@@ -134,7 +134,7 @@ tools:context="smartindiahackathon.texway.MainActivity">
 <LinearLayout
     android:id="@+id/source_search"
     android:layout_width="0dp"
-    android:layout_height="58dp"
+    android:layout_height="52dp"
     android:layout_marginTop="50dp"
     app:layout_constraintLeft_toRightOf="@id/vertical_15"
     app:layout_constraintRight_toLeftOf="@id/vertical_85">
@@ -158,7 +158,8 @@ tools:context="smartindiahackathon.texway.MainActivity">
 
 <LinearLayout
     android:layout_width="0dp"
-    android:layout_height="58dp"
+    android:layout_height="52dp"
+    android:id="@+id/destination_search"
     app:layout_constraintLeft_toRightOf="@id/vertical_15"
     app:layout_constraintRight_toLeftOf="@id/vertical_85"
     app:layout_constraintTop_toBottomOf="@id/source_search">
@@ -180,14 +181,39 @@ tools:context="smartindiahackathon.texway.MainActivity">
 
 </LinearLayout>
 
+
 <LinearLayout
-    android:layout_width="24dp"
-    android:layout_height="24dp"
+    android:layout_width="0dp"
+    android:layout_height="52dp"
+    app:layout_constraintLeft_toRightOf="@id/vertical_15"
+    app:layout_constraintRight_toLeftOf="@id/vertical_85"
+    app:layout_constraintTop_toBottomOf="@id/destination_search">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/via_edittext"
+        android:maxLines="1"
+        android:inputType="text"
+        android:layout_marginTop="15dp"
+        android:layout_weight=".75"
+        android:background="@drawable/search_box"
+        android:hint="Via (Optional)"
+        android:paddingLeft="20dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#77ffffff"
+        android:textSize="16dp" />
+
+</LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="23dp"
+    android:layout_height="23dp"
     android:onClick="switch_text"
     app:layout_constraintLeft_toRightOf="@id/vertical_88"
     app:layout_constraintTop_toBottomOf="@id/horizontal_for_switch"
     android:clickable="true"
-
     android:id="@+id/switch_button">
 
     <ImageView
@@ -198,13 +224,11 @@ tools:context="smartindiahackathon.texway.MainActivity">
 </LinearLayout>
 
 <LinearLayout
-    android:layout_width="16.5dp"
-    android:layout_height="16.5dp"
+    android:layout_width="15.5dp"
+    android:layout_height="15.5dp"
     app:layout_constraintRight_toLeftOf="@id/vertical_12"
     app:layout_constraintTop_toBottomOf="@id/horizontal_start"
-    android:layout_marginTop="27dp"
-    android:clickable="true"
-    android:onClick="graph_coordinates">
+    android:layout_marginTop="27dp">
 
     <ImageView
         android:layout_width="match_parent"
@@ -214,16 +238,30 @@ tools:context="smartindiahackathon.texway.MainActivity">
 </LinearLayout>
 
 <LinearLayout
-    android:layout_width="19dp"
-    android:layout_height="19dp"
+    android:layout_width="18dp"
+    android:layout_height="18dp"
     app:layout_constraintRight_toLeftOf="@id/vertical_12"
     app:layout_constraintTop_toBottomOf="@id/source_search"
-    android:layout_marginTop="27dp">
+    android:layout_marginTop="24dp">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/destination"/>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="18dp"
+    android:layout_height="18dp"
+    app:layout_constraintRight_toLeftOf="@id/vertical_12"
+    app:layout_constraintTop_toBottomOf="@id/destination_search"
+    android:layout_marginTop="24dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_via"/>
 
 </LinearLayout>
 

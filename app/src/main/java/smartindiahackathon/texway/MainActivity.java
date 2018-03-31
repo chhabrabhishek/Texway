@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -23,11 +24,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+    private String API_ADDR = "http://192.168.43.241:5000/map";
 
     EditText edt1,edt2;
     FloatingActionButton FAB;
@@ -68,29 +84,73 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AddData(View view){
-        GpsLocation gpsLocation = new GpsLocation(getApplicationContext());
-        Location location = gpsLocation.getLocation();
-        if (location!=null){
-            String latitude = Double.toString(location.getLatitude());
-            String longitude = Double.toString(location.getLongitude());
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("+918368119807",null,"Latitude : "+latitude+"\n"+"Longitude : "+longitude,null,null);
-        }
+//        GpsLocation gpsLocation = new GpsLocation(getApplicationContext());
+//        Location location = gpsLocation.getLocation();
+//        if (location!=null){
+//            String latitude = Double.toString(location.getLatitude());
+//            String longitude = Double.toString(location.getLongitude());
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage("+918368119807",null,"Latitude : "+latitude+"\n"+"Longitude : "+longitude,null,null);
+//        }
+//
+//        DataBaseManager dataBaseManager = new DataBaseManager(this);
+//        if (edt1.getText().toString().trim().length()==0 || edt2.getText().toString().trim().length()==0) {
+//            Toast.makeText(getApplicationContext(),"TextBox can't be empty",Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            boolean insert_status = dataBaseManager.insert_data(edt1.getText().toString(), edt2.getText().toString(), date);
+//            if (insert_status == true) {
+//                Toast.makeText(getApplicationContext(), "Rows are added", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(getApplicationContext(), "Addition unsuccessful", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }
+        this.onSubmit(edt1.getText().toString(), edt2.getText().toString());
+    }
 
-        DataBaseManager dataBaseManager = new DataBaseManager(this);
-        if (edt1.getText().toString().trim().length()==0 || edt2.getText().toString().trim().length()==0) {
-            Toast.makeText(getApplicationContext(),"TextBox can't be empty",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            boolean insert_status = dataBaseManager.insert_data(edt1.getText().toString(), edt2.getText().toString(), date);
-            if (insert_status == true) {
-                Toast.makeText(getApplicationContext(), "Rows are added", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Addition unsuccessful", Toast.LENGTH_SHORT).show();
+    public void onSubmit(String from, String to) {
+        final Context thisContext = this;
 
+        String url = Uri.parse(API_ADDR)
+                .buildUpon()
+                .appendQueryParameter("from", from)
+                .appendQueryParameter("to", to)
+                .build().toString();
+
+        JsonArrayRequest req = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+
+                    ArrayList<Float[]> all = new ArrayList<>();
+
+                    for (int l=0; l < response.length(); l++) {
+                        JSONArray internal = response.getJSONArray(l);
+                        JSONArray iinternal = internal.getJSONArray(1);
+                        all.add(new Float[] { (float)iinternal.getDouble(0),(float)iinternal.getDouble(1)  });
+                        Log.d("C", String.valueOf(iinternal.get(0)));
+                    }
+
+                    GraphActivity.arrayList = all;
+
+                    Intent intent = new Intent(MainActivity.this,GraphActivity.class);
+                    startActivity(intent);
+
+                    Toast.makeText(thisContext, "Got!", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(thisContext, "Failed Acquiring Route Info", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        RequestQueue rq = Volley.newRequestQueue(this);
+        rq.add(req);
     }
 
 
@@ -165,9 +225,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void graph_coordinates(View view){
-        Intent intent = new Intent(MainActivity.this,GraphActivity.class);
-        startActivity(intent);
-    }
 
 }
